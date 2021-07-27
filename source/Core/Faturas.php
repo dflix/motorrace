@@ -25,7 +25,7 @@ class Faturas {
 //                return;
 //            }
 
-            //fatura fixa
+            //fatura Unica
             if (isset($data['tipo']) && $data['tipo'] == "Unica") {
 
                 //retura pontos e acentos do valor
@@ -127,9 +127,7 @@ class Faturas {
             //se tipo for fixa
             if (isset($data['tipo']) && $data['tipo'] == "Fixa") {
 
-                $agora = date("Y-m-d");
-
-                //  var_dump($data);
+               
 
                 if ($data["js_fixa"] == "mensal") {
 
@@ -140,6 +138,45 @@ class Faturas {
                     $interval = new \DateInterval('P1M');
                     // Resgatamos datas de cada ano entre data de início e fim
                     $period = new \DatePeriod($date_begin, $interval, $date_end);
+                    
+                    $agora = date("Y-m-d");
+                    
+                    $vencimento = $data["vencimento_em"];
+                    
+                    if ($vencimento <= $agora) {
+                        $data["status"] = "paid";
+                    } else {
+
+                        $data["status"] = "unpaid";
+                    }
+                    
+                    $data["vencimento_em"] = $data["vencimento_em"];
+                    /////retura pontos e acentos do valor
+                    $data["valor"] = str_replace(".", "", $data["valor"]);
+                    $data["valor"] = str_replace(",", "", $data["valor"]);
+                    $data["loja"] = $_SESSION["carteira"];
+                    $data["carteira_id"] = $_SESSION["carteira"];
+
+                    $data["repetir_em"] = date('Y-m-d', strtotime("+1 month", strtotime("{$data["vencimento_em"]}")));
+                    $data["user_id"] = $_SESSION["user_id"];
+                    $data["status"] = "paid";
+                    unset($data["submit"]);
+
+                   // var_dump($data);
+
+                    $cadastra = new \Source\Models\Create();
+                    $cadastra->ExeCreate("app_faturas", $data);
+                    $cadastra->getResult();
+
+                    if ($cadastra->getResult()) {
+                        echo "<div class=\"alert alert-success\" role=\"alert\">
+               <h5>  Cadastro realizado com sucesso</h5> </div>";
+                    } else {
+                        echo  "<div class=\"alert alert-danger\" role=\"alert\">
+               <h5>  Erro ao cadastrar</h5> </div>";
+                    }
+                    
+                   //  var_dump($data);
                 }
 
                 if ($data["js_fixa"] == "anual") {
@@ -151,17 +188,8 @@ class Faturas {
                     $interval = new \DateInterval('P1Y');
                     // Resgatamos datas de cada ano entre data de início e fim
                     $period = new \DatePeriod($date_begin, $interval, $date_end);
-                }
-
-                if ($data["js_fixa"] == "anual") {
-                    $ref = "year";
-                } else {
-                    $ref = "month";
-                }
-
-                foreach ($period as $date) {
-
-                    $data["vencimento_em"] = $date->format("Y-m-d");
+                    
+                                        $data["vencimento_em"] = $date->format("Y-m-d");
                     /////retura pontos e acentos do valor
                     $data["valor"] = str_replace(".", "", $data["valor"]);
                     $data["valor"] = str_replace(",", "", $data["valor"]);
@@ -185,6 +213,14 @@ class Faturas {
                <h5>  Erro ao cadastrar</h5> </div>";
                     }
                 }
+
+                if ($data["js_fixa"] == "anual") {
+                    $ref = "year";
+                } else {
+                    $ref = "month";
+                }
+
+
             }
 
 

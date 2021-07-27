@@ -19,17 +19,7 @@
        $categ->post();
         ?>
 
-        <div class="col-md-4" style="margin-top: 10px;"> 
-            <a href="<?= CONF_URL_APP ?>/?p=post-categ" style="text-decoration: none;color:#fff;">  <div class="subscribe btn btn-primary btn-block rounded-pill shadow-sm"> Categorias</div> </a>
-        </div>
 
-        <div class="col-md-4" style="margin-top: 10px;"> 
-            <a href="<?= CONF_URL_APP ?>/?p=post" style="text-decoration: none;color:#fff;">   <div class="subscribe btn btn-primary btn-block rounded-pill shadow-sm"> Post</div> </a>
-        </div>
-
-        <div class="col-md-4" style="margin-top: 10px;"> 
-            <a href="<?= CONF_URL_APP ?>/?p=post-home" style="text-decoration: none;color:#fff;">   <div class="subscribe btn btn-primary btn-block rounded-pill shadow-sm"> Home</div> </a>
-        </div>
     </div>
     <div class="row"> 
 
@@ -43,6 +33,7 @@
                     <p>Categoria</p>
                     <select name="categoria" class="form-comtrol col-md-12"> 
                         <option value="pagina"> Inserir como Página </option>
+                        <option value="blog"> Inserir como Blog </option>
                         <?php 
                         
                         $read = new Source\Models\Read();

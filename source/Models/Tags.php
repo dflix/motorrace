@@ -466,8 +466,13 @@ class Tags {
 
 
                                                                     if ($var) {
+                                                                        
+                                                                         $url = $_SERVER['HTTP_HOST'] . $_SERVER["REQUEST_URI"];
+                                                                         
+                                                                         $tratar = explode("/", $url);
 
 
+                                                                     //  var_dump($tratar);
                                 $paginas = new Read();
                                 $paginas->ExeRead("app_post", "WHERE slug = :a", "a={$tratar["2"]}");
                                 $paginas->getResult();

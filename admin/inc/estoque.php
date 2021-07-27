@@ -123,7 +123,7 @@
         </div>
         
         <div class="col-md-6"> 
-            <h3> Estoque </h3>
+            <h3 class="text-white"> Estoque </h3>
             
               <form method="post" id="form-pesquisa" action=""> 
             <label>Pesquisa </label>

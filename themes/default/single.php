@@ -18,7 +18,7 @@
     
     ?>
     
-    <img src="<?=CONF_URL_BASE ?>/uploads/<?= $read->getResult()[0]["imagem"]?>" /> 
+    <img src="<?=CONF_URL_BASE ?>/admin/uploads/<?= $read->getResult()[0]["imagem"]?>" alt="<?= $read->getResult()[0]["title"]?>" title="<?= $read->getResult()[0]["title"]?>" width="100%" /> 
     
     <?= $read->getResult()[0]["content"]?>
     

@@ -57,7 +57,7 @@
                     ?>
                     <div class="col-lg-4">
                         <figure class="rounded p-3 bg-white shadow-sm">
-                            <img src="<?= CONF_URL_BASE ?>/uploads/<?= $value["imagem"] ?>" alt="" class="w-100 card-img-top">
+                            <img src="<?= CONF_URL_BASE ?>/admin/uploads/<?= $value["imagem"] ?>" alt="" class="w-100 card-img-top">
                             <figcaption class="p-4 card-img-bottom">
                                 <h2 class="h5 font-weight-bold mb-2 font-italic"><?= $value["pagina"] ?></h2>
                                 <p class="mb-0 text-small text-muted font-italic"><?= $value["description"] ?></p>

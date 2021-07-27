@@ -13,12 +13,12 @@
 /**
  * PROJECT URLs
  */
-define("CONF_URL_BASE", "https://www.motorrace.com.br");
-define("CONF_URL_BASE_DELIVERY", "https://www.motorrace.com.br/delivery");
-define("CONF_URL_APP", "https://www.motorrace.com.br/admin");
-define("CONF_URL_TEST", "https://www.motorrace.com.br");
+define("CONF_URL_BASE", "https://www.localhost/motorrace");
+define("CONF_URL_BASE_DELIVERY", "https://www.localhost/motorrace/delivery");
+define("CONF_URL_APP", "https://www.localhost/motorrace/admin");
+define("CONF_URL_TEST", "https://www.localhost/motorrace");
 define("CONF_URL_ADMIN", "/admin");
-define("LINK_ASSETS_APP", "https://www.motorrace.com.br/admin");
+define("LINK_ASSETS_APP", "https://www.localhost/motorrace/admin");
 
 /**
  * SITE

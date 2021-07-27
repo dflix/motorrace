@@ -96,7 +96,7 @@ foreach ($blog as $valBlog) {
     ?>  
                     <div class="col-lg-4">
                         <figure class="rounded p-3 bg-white shadow-sm">
-                            <img src="<?= CONF_URL_BASE ?>/uploads/<?= $valBlog["imagem"] ?>" alt="" class="w-100 card-img-top">
+                            <img src="<?= CONF_URL_BASE ?>/admin/uploads/<?= $valBlog["imagem"] ?>" alt="" class="w-100 card-img-top">
                             <figcaption class="p-4 card-img-bottom">
                                 <h2 class="h5 font-weight-bold mb-2 font-italic"><?= $valBlog["pagina"] ?></h2>
                                 <p class="mb-0 text-small text-muted font-italic"><?= $valBlog["description"] ?></p>
@@ -112,13 +112,13 @@ foreach ($blog as $valBlog) {
     </div>
 </div>
 
-<div class="container-fluid bg-light produtos" id="produtos"> 
+<!--<div class="container-fluid bg-light produtos" id="produtos"> 
 
 
     <div class="row">
         <div class="col-lg-11 mx-auto">
             <h5 class="text-center"> Produtos </h5>
-            <!-- FIRST EXAMPLE ===================================-->
+             FIRST EXAMPLE ===================================
             <div class="row py-5">
 <?php
 foreach ($produto as $valProd) {
@@ -147,7 +147,7 @@ foreach ($produto as $valProd) {
     </div>
 
 
-</div>
+</div>-->
 
 <section class="container-fluid bg-white localizacao" id="localizacao"> 
 

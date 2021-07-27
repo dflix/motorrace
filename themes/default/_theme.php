@@ -89,9 +89,9 @@ require './vendor/autoload.php';
        <li class="nav-item">
           <a class="nav-link" href="#blog">Blog</a>
         </li>
-       <li class="nav-item">
+<!--       <li class="nav-item">
           <a class="nav-link" href="#produtos">Produtos</a>
-        </li>
+        </li>-->
        <li class="nav-item">
           <a class="nav-link" href="#localizacao">Localização</a>
         </li>

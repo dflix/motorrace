@@ -263,25 +263,33 @@ class Entradas {
             }
         }
     }
-
-    public function buscar() {
-        $filtro = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+    
+ 
+    
+public function buscarFixas() {
+           //var_dump($_SESSION); 
+         $filtro = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        
+       
 
         if (!empty($filtro["buscar"])) {
            //var_dump($filtro);
-            if ($filtro["periodo"] == "todas") {
+            if ($filtro["start"] == "todas") {
                 $prepPeriodo = null;
                 $paramPeriodo = null;
             } else {
 
-                $trata = explode("/", $filtro["periodo"]);
-                $varmonth = $trata[0];
-                $varyear = $trata[1];
+                $start = $filtro["start"];
+                $end = $filtro["end"];
+//                    $trata = explode("/", $filtro["periodo"]);
+//                    $varmonth = $trata[0];
+//                    $varyear = $trata[1];
 
                 // var_dump($trata);
 
-                $prepPeriodo = " AND MONTH(vencimento_em) = :m AND YEAR(vencimento_em) = :y ";
-                $paramPeriodo = "&m={$varmonth}&y={$varyear}";
+                //$prepPeriodo = " AND MONTH(vencimento_em) = :m AND YEAR(vencimento_em) = :y ";
+                $prepPeriodo = "AND vencimento_em  BETWEEN  :m AND  :y ";
+                $paramPeriodo = "&m={$start}&y={$end}";
             }
 
             if ($filtro["carteira"] == "geral") {
@@ -319,8 +327,8 @@ class Entradas {
         if (!empty($filtro["buscar"])) {
 
             $read = new \Source\Models\Read();
-            $read->ExeRead("app_faturas", "WHERE user_id = :i AND modo = :r {$prepPeriodo} {$prepCarteira} {$prepCategoria} {$prepStatus} LIMIT :limit OFFSET :offset",
-                    "i={$_SESSION['user_id']}&r=entrada{$paramPeriodo}{$paramCarteira}{$paramCategoria}{$paramStatus}&limit={$pager->getLimit()}&offset={$pager->getOffset()}");
+            $read->ExeRead("app_faturas", "WHERE tipo = :a  {$prepPeriodo} {$prepCarteira} {$prepCategoria} {$prepStatus} LIMIT :limit OFFSET :offset",
+                    "a=Fixa&{$paramPeriodo}{$paramCarteira}{$paramCategoria}{$paramStatus}&limit={$pager->getLimit()}&offset={$pager->getOffset()}");
            return $read->getResult();
         } else {
             
@@ -328,8 +336,84 @@ class Entradas {
             $y = date("Y");
 
             $read = new \Source\Models\Read();
-            $read->ExeRead("app_faturas", "WHERE user_id = :i AND modo = :a AND MONTH(vencimento_em) = :m AND YEAR(vencimento_em) = :y  LIMIT :limit OFFSET :offset",
-      "i={$_SESSION['user_id']}&a=entrada&&m={$m}&y={$y}&limit={$pager->getLimit()}&offset={$pager->getOffset()}");
+            $read->ExeRead("app_faturas", "WHERE tipo = :a AND MONTH(vencimento_em) = :m AND YEAR(vencimento_em) = :y  LIMIT :limit OFFSET :offset",
+      "a=Fixa&&m={$m}&y={$y}&limit={$pager->getLimit()}&offset={$pager->getOffset()}");
+           return $read->getResult();
+        }
+        
+    }
+
+    public function buscar() {
+        $filtro = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+        
+       // var_dump($filtro);
+
+        if (!empty($filtro["buscar"])) {
+           //var_dump($filtro);
+            if ($filtro["start"] == "todas") {
+                $prepPeriodo = null;
+                $paramPeriodo = null;
+            } else {
+
+                $start = $filtro["start"];
+                $end = $filtro["end"];
+//                    $trata = explode("/", $filtro["periodo"]);
+//                    $varmonth = $trata[0];
+//                    $varyear = $trata[1];
+
+                // var_dump($trata);
+
+                //$prepPeriodo = " AND MONTH(vencimento_em) = :m AND YEAR(vencimento_em) = :y ";
+                $prepPeriodo = "AND vencimento_em  BETWEEN  :m AND  :y ";
+                $paramPeriodo = "&m={$start}&y={$end}";
+            }
+
+            if ($filtro["carteira"] == "geral") {
+
+                $prepCarteira = null;
+                $paramCarteira = null;
+            } else {
+
+                $prepCarteira = " AND carteira_id = :cartid ";
+                $paramCarteira = "&cartid={$filtro['carteira']}";
+            }
+
+            if ($filtro["categoria"] == "geral") {
+                $prepCategoria = null;
+                $paramCategoria = null;
+            } else {
+                $prepCategoria = " AND categoria_id = :cat ";
+                $paramCategoria = "&cat={$filtro["categoria"]}";
+            }
+
+            if ($filtro["status"] == "todas") {
+                $prepStatus = null;
+                $paramStatus = null;
+            } else {
+                $prepStatus = " AND status = :status ";
+                $paramStatus = "&status={$filtro["status"]}";
+            }
+        }
+
+        $atual = filter_input(INPUT_GET, 'atual', FILTER_VALIDATE_INT);
+        $pager = new \Source\Support\Pager("" . CONF_URL_APP . "/entrada&atual=", 'Primeira', 'Ultima', '1');
+
+        $pager->ExePager($atual, 10);
+
+        if (!empty($filtro["buscar"])) {
+
+            $read = new \Source\Models\Read();
+            $read->ExeRead("app_faturas", "WHERE modo = :r  {$prepPeriodo} {$prepCarteira} {$prepCategoria} {$prepStatus} LIMIT :limit OFFSET :offset",
+                    "r=entrada{$paramPeriodo}{$paramCarteira}{$paramCategoria}{$paramStatus}&limit={$pager->getLimit()}&offset={$pager->getOffset()}");
+           return $read->getResult();
+        } else {
+            
+            $m = date("m");
+            $y = date("Y");
+
+            $read = new \Source\Models\Read();
+            $read->ExeRead("app_faturas", "WHERE modo = :a AND MONTH(vencimento_em) = :m AND YEAR(vencimento_em) = :y  LIMIT :limit OFFSET :offset",
+      "a=entrada&&m={$m}&y={$y}&limit={$pager->getLimit()}&offset={$pager->getOffset()}");
            return $read->getResult();
         }
         

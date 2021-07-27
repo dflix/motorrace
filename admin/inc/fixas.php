@@ -15,7 +15,7 @@
     <section class="dashboard-counts section-padding">
         <div class="container-fluid">
 
-            <div class="page-header"><h3 class="text-white"> Entradas </h3> 
+            <div class="page-header"><h3 class="text-white"> Contas Fixas </h3> 
                 
                 <?php 
                 $entrada = new Source\Core\Faturas();
@@ -23,7 +23,7 @@
                 ?>
             
                  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalreceita">
-                                Lançar Entradas
+                                Lançar Contas Fixas
                             </button>
 
 
@@ -61,7 +61,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-lg-6"> 
+                                                    <div class="col-lg-4"> 
                                                         </br>
                                                         <p><i class="fa fa-book" ></i> Loja </p>
                                                         <select name="carteira_id" class="form-control"> 
@@ -79,13 +79,13 @@
                                                         </select>
 
                                                     </div>
-                                                    <div class="col-lg-6"> 
+                                                    <div class="col-lg-4"> 
                                                         </br>
                                                         <label><i class="fa fa-filter"></i> Categoria </label>
                                                         <select name="categoria_id" class="form-control"> 
                                                             <?php 
                                                             $renda = new Source\Models\Read();
-                                                            $renda->ExeRead("app_categorias" ,"WHERE type = :a" , "a=renda");
+                                                            $renda->ExeRead("app_categorias");
                                                             $renda->getResult();
                                                             foreach ($renda->getResult() as $forrenda):
                                                        
@@ -93,6 +93,18 @@
 
                                                             <option value="<?= $forrenda["id"] ?>"><?= $forrenda["name"] ?></option>
                                                             <?php endforeach; ?>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-4"> 
+                                                    </br>
+                                                        <label><i class="fa fa-filter"></i> Modo </label>
+                                                         <select name="modo" class="form-control"> 
+   
+
+                                                            <option value="entrada">Selecione Modo </option>
+                                                            <option value="entrada">Entrada</option>
+                                                            <option value="saida">Saida</option>
+                                                            
                                                         </select>
                                                     </div>
                                                 </div>
@@ -137,11 +149,11 @@
 
 
 
-                                                        <input type="radio" name="tipo" value="Unica" >  Unica
+                                                        <!--<input type="radio" name="tipo" value="Unica" >  Unica-->
 
-                                                        <input type="radio" name="tipo" value="Fixa" >  Fixa 
+                                                        <input type="radio" name="tipo" value="Fixa" selected >  Fixa 
 
-                                                        <input type="radio" name="tipo" value="Parcela" > Parcela
+                                                        <!--<input type="radio" name="tipo" value="Parcela" > Parcela-->
 
                                                         <!--<div class="camposExtras">
                                                             Aqui vem os dados que é para esconder ou aparecer
@@ -239,7 +251,7 @@
                             
                         </div>
                         <div class="form-group">
-                            <label>Carteira </label>
+                            <label>Lojas </label>
                             <select name="carteira" class="form-control"> 
                                 <?php
                                 $cart = new Source\Models\Read();
@@ -257,7 +269,7 @@
                             <select name="categoria" class="form-control"> 
                                 <?php
                                 $cat = new Source\Models\Read();
-                                $cat->ExeRead("app_categorias", "WHERE type = :r", "r=renda");
+                                $cat->ExeRead("app_categorias");
                                 $cat->getResult();
                                 foreach ($cat->getResult() as $value):
                                     ?>
@@ -311,11 +323,11 @@
                                 
                                 $entradas = new \Source\Core\Entradas();
                                 $entradas->update();
-                                $entradas->buscar();
+                                $entradas->buscarFixas();
                                 
                                  $atual = filter_input(INPUT_GET, 'atual', FILTER_VALIDATE_INT);
            
-           $pager = new \Source\Support\Pager('?p=entrada&atual=', 'Primeira', 'Ultima', '1');
+           $pager = new \Source\Support\Pager('?p=fixas&atual=', 'Primeira', 'Ultima', '1');
              $pager->ExePager($atual, 5);
             
              $pager->ExePaginator("app_faturas");
@@ -323,7 +335,7 @@
            
 
                                 $total = 0;
-                                foreach ($entradas->buscar() as $exibe):
+                                foreach ($entradas->buscarFixas() as $exibe):
                                     
                                     $total += $exibe["valor"];
                                     ?>
@@ -404,21 +416,21 @@
                                                         </br>
                                                         <p><i class="fa fa-book" ></i> Carteira </p>
                                                         <select name="carteira_id" class="form-control"> 
-                                                            <option value="<?= $viewedit->getResult()[0]["carteira_id"] ?>"> <?php
+                                                            <option value="<?php echo $viewedit->getResult()[0]["wallet"] ?>"> <?php
                                                             
                                                             
                                                                     
                                                                     $nomecart = new Source\Models\Read();
-                                                            $nomecart->ExeRead("app_carterias", "WHERE id = :id", "id={$viewedit->getResult()[0]["carteira_id"]}");
+                                                            $nomecart->ExeRead("app_carterias", "ORDER BY id DESC");
                                                            echo $nomecart->getResult()[0]['wallet'];
                                                                     
                                                                     ?> </option>
                                                             <?php 
-                                                            foreach ($carteira as $forcarteira):
+                                                            foreach ($nomecart->getResult() as $forcarteira):
                                                        
                                                             ?>
 
-                                                            <option value="<?= $forcarteira["id"] ?>"><?= $forcarteira["wallet"] ?></option>
+                                                            <option value="<?= $forcarteira["wallet"] ?>"><?= $forcarteira["wallet"] ?></option>
                                                             <?php endforeach; ?>
                                                         </select>
                                                         </select>
